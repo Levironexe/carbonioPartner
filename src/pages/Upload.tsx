@@ -6,6 +6,9 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import createCollection, {
   CreateCollectionParams,
 } from "../script/CreateCollection";
+import CreateNFT, {
+  CreateNFTParams,
+} from "../script/CreateNFT";
 
 // Define types for our data structure
 interface ProductStage {
@@ -83,6 +86,7 @@ const Upload: React.FC = () => {
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
 
   const { publicKey } = useWallet();
+  const wallet = useWallet();
   const walletAddress = publicKey?.toBase58();
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -207,8 +211,12 @@ const Upload: React.FC = () => {
           metadataUri: result.ipfs_metadata_url,
         };
 
+        console.log(result.ipfs_metadata_url)
+
         //call the function to create the new collection
-        //createCollection(collectionParams);
+        createCollection(wallet, collectionParams);
+
+
       } else {
         // Log server-side error details
         console.error("Server Error:", result);

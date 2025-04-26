@@ -21,9 +21,9 @@ import {
 } from "@solana/web3.js"; // Provides access to Solana's API and network clusters
 
 
-import {
-  getExplorerLink
-} from "@solana-developers/helpers"; // Helper functions for Solana development and wallet management
+// import {
+//   getExplorerLink
+// } from "@solana-developers/helpers"; // Helper functions for Solana development and wallet management
 
 import { WalletContextState} from '@solana/wallet-adapter-react';
 import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
@@ -140,13 +140,13 @@ async function createNFT(wallet: WalletContextState, params: CreateNFTParams) {
         throw new Error('Failed to fetch collection data');
     }
 
-    console.log(
-        `🖼️ Created NFT! Address is ${getExplorerLink(
-          "address",
-          createdNFT.mint.publicKey,
-          "devnet"
-        )}`
-    );
+    // console.log(
+    //     `🖼️ Created NFT! Address is ${getExplorerLink(
+    //       "address",
+    //       createdNFT.mint.publicKey,
+    //       "devnet"
+    //     )}`
+    // );
 
 
     const metadataUri = createdNFT.metadata.uri;
@@ -165,7 +165,7 @@ async function createNFT(wallet: WalletContextState, params: CreateNFTParams) {
     // console.log("Collecion: ", collectionMint);
 
     return {
-      collectionAddress: NFTMint.publicKey,
+      NFTAddress: NFTMint.publicKey,
       name: params.name,
       symbol: params.symbol,
       mint: NFTMint,

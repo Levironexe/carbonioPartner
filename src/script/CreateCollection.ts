@@ -1,3 +1,7 @@
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
+window.global = window;
+
 import {
   createNft, //function to create the NFT using the metapletex library
   fetchDigitalAsset, // Function to fetch NFT data after creation
@@ -14,6 +18,7 @@ import {
 } from "@metaplex-foundation/umi";
 
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults"; // Creates a Umi instance for Solana
+//import {createUmi} from "@metaplex-foundation/umi-web"
 import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
 
 import {
@@ -52,7 +57,6 @@ async function createCollection(wallet: WalletContextState, params: CreateCollec
       throw new Error("Wallet not connected  or missing required capabilities !!!.");
     }
 
-
   
     // Set up connection to Solana devnet
     const connection = new Connection(clusterApiUrl("devnet"));
@@ -81,7 +85,6 @@ async function createCollection(wallet: WalletContextState, params: CreateCollec
       });
     }
 
-
     /*
     Set up Umi instance to interact with Solana blockchain
     Umi is Metaplex's framework that makes it easier to interact with Solana 
@@ -109,6 +112,13 @@ async function createCollection(wallet: WalletContextState, params: CreateCollec
       uri: params.metadataUri,
       sellerFeeBasisPoints: percentAmount(0), // 0% royalties
       isCollection: true, // This marks it as a collection
+      creators: ([
+        {
+          address: umi.identity.publicKey,  // set your wallet as the creator
+          verified: true,                   // will automatically be verified if you sign
+          share: 100,                        // 100% ownership
+        },
+      ]),
     });
 
     //Send and confirm the transaction
@@ -130,20 +140,22 @@ async function createCollection(wallet: WalletContextState, params: CreateCollec
     // Extract custom properties and attributes from metadata
     const attributes = metadataJson.attributes;
     const properties = metadataJson.properties;
+    const imageUri  = metadataJson.image;
   
 
     // // Log the collection details
-    // console.log("✅ Collection created successfully!");
-    // console.log("Collection Address:", collectionMint.publicKey);
-    // console.log("Collection Name:", params.name);
-    // console.log("Collection Symbol:", params.symbol);
-    // console.log("Collecion: ", collectionMint);
+    console.log("✅ Collection created successfully!");
+    console.log("Collection Address:", collectionMint.publicKey);
+    console.log("Collection Name:", params.name);
+    console.log("Collection Symbol:", params.symbol);
+    console.log("Collecion: ", collectionMint);
 
     return {
       collectionAddress: collectionMint.publicKey,
       name: params.name,
       symbol: params.symbol,
       mint: collectionMint,
+      imageUri: imageUri,
       attributes: attributes,
       properties: properties,
     };
