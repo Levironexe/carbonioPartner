@@ -6,12 +6,12 @@
   --black-color: black;
   --white-color: white;
   --tw-shadow-alpha: 0.5;
-  margin: 0;
 }
 
 * {
   font-family: "Oxanium", sans-serif;
   font-optical-sizing: auto;
+  text-align: left;
 }
 
 .min-h-custom {

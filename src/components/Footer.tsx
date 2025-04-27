@@ -1,4 +1,3 @@
-import React from "react";
 import coal from "../assets/coal.webp";
 
 const Footer = () => {

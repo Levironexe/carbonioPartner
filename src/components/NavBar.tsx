@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -21,12 +20,12 @@ const NavBar = () => {
         </div>
         <div className="w-full sm:w-fit text-white text-base sm:text-lg md:text-lg flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center sm:justify-end bg-purple-700 px-2 sm:px-3 py-1">
           <Link
-            to="/upload"
+            to="/"
             className="hover:text-black transition-all duration-200"
           >
             Upload
           </Link>
-          <Link
+          {/* <Link
             className="hover:text-black transition-all duration-200"
             to="statistic"
           >
@@ -37,7 +36,7 @@ const NavBar = () => {
             to="/history"
           >
             History
-          </Link>
+          </Link> */}
           <Link
             className="hover:text-black transition-all duration-200"
             to="/profile"

@@ -4,7 +4,6 @@ import { CreateCollectionParams } from "../script/CreateCollection";
 import createNFT from "../script/CreateNFT"; // your createCollection file
 import { CreateNFTParams } from "../script/CreateNFT";
 import { useState } from "react";
-import {fetchCollectionsByWallet} from "../script/FetchData"
 
 
 export default function CreateCollectionButton() {
@@ -30,37 +29,37 @@ export default function CreateCollectionButton() {
     try {
       setLoading(true);
 
-      fetchCollectionsByWallet()
+      //fetchCollectionsByWallet()
 
-      // const result = await createCollection(wallet, collectionParams);
+      const result = await createCollection(wallet, collectionParams);
 
-      // console.log(
-      //   "✅ Collection created with address:",
-      //   result.collectionAddress
-      // );
+      console.log(
+        "✅ Collection created with address:",
+        result.collectionAddress
+      );
 
 
-      // const NFTParams: CreateNFTParams = {
-      //   name: "Material Sourcing", 
-      //   symbol: "MS",
-      //   metadataUri: "https://coffee-passive-spider-608.mypinata.cloud/ipfs/bafkreibmcjxakzp6f7bupfrifsri5tnxmxt53tis2opdmeert3cqic2an4",
-      //   collectionMint: result.collectionAddress
+      const NFTParams: CreateNFTParams = {
+        name: "Material Sourcing", 
+        symbol: "MS",
+        metadataUri: "https://coffee-passive-spider-608.mypinata.cloud/ipfs/bafkreibmcjxakzp6f7bupfrifsri5tnxmxt53tis2opdmeert3cqic2an4",
+        collectionMint: result.collectionAddress
 
-      // }
+      }
 
-      // const nftResult = await createNFT(wallet, NFTParams);
+      const nftResult = await createNFT(wallet, NFTParams);
 
-      // console.log("✅ NFT created with address:", nftResult.NFTAddress);
-      // console.log("NFT Metadata:", nftResult);
+      console.log("✅ NFT created with address:", nftResult.NFTAddress);
+      console.log("NFT Metadata:", nftResult);
   
 
-      //alert(`Collection created!\nAddress: ${result.collectionAddress}`);
+      alert(`Collection created!\nAddress: ${result.collectionAddress}`);
 
-      // result.attributes.forEach((attr: { trait_type: any; value: any }) => {
-      //   console.log(`${attr.trait_type}: ${attr.value}`);
-      // });
+      result.attributes.forEach((attr: { trait_type: any; value: any }) => {
+        console.log(`${attr.trait_type}: ${attr.value}`);
+      });
 
-      // console.log(result.imageUri)
+      console.log(result.imageUri)
 
 
 
