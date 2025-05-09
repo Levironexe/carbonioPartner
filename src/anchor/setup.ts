@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import * as anchor from "@coral-xyz/anchor";
+
 import { Program, AnchorProvider, IdlAccounts } from "@coral-xyz/anchor";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 import {CompanyRegistration } from "./idl";

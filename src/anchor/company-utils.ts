@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import * as anchor from "@coral-xyz/anchor";
-import { SystemProgram, PublicKey } from "@solana/web3.js";
+import {  PublicKey } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { useCompanyProgram } from "../anchor/setup";
 
