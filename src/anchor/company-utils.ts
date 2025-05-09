@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import * as anchor from "@coral-xyz/anchor";
-import { SystemProgram, PublicKey } from "@solana/web3.js";
+
+import {  PublicKey } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { useCompanyProgram } from "../anchor/setup";
 
@@ -8,7 +7,6 @@ export const useCompanyActions = () => {
     const { connection } = useConnection();
     const {publicKey, sendTransaction} = useWallet();
     const { program, companyRegistrationPDA } = useCompanyProgram();
-    const wallet = useWallet();
 
     //Fetch company data from given wallet address
     const fetchCompanyData = async (companyWalletAddr: string) => {
@@ -83,12 +81,12 @@ export const useCompanyActions = () => {
     const verify = async (companyWalletAddr:string) => {
         if (!program || !companyRegistrationPDA || !publicKey) return;  // Check if publicKey is valid
 
-        const walletAddr = new PublicKey(companyWalletAddr);
+        // const walletAddr = new PublicKey(companyWalletAddr);
 
-        const [pda] = PublicKey.findProgramAddressSync(
-            [Buffer.from("company"), walletAddr.toBuffer()],
-            program.programId
-        );
+        // const [pda] = PublicKey.findProgramAddressSync(
+        //     [Buffer.from("company"), walletAddr.toBuffer()],
+        //     program.programId
+        // );
         
         try {
             const tx = await program.methods

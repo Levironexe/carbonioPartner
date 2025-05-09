@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { useAnchorWallet, useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import * as anchor from "@coral-xyz/anchor";
-import { Program, AnchorProvider, IdlAccounts } from "@coral-xyz/anchor";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { AnchorProvider, IdlAccounts } from "@coral-xyz/anchor";
+import { PublicKey } from "@solana/web3.js";
 import type { CompanyRegistration } from "./idl";
 import idl from "./idl.json";
 
@@ -10,8 +10,6 @@ import { Buffer } from "buffer";
 window.Buffer = window.Buffer || Buffer;
 
 export function useCompanyProgram(){
-
-  const programId = new PublicKey("ACRzjs3gnGYhkRZaGaCjMdS8ybVsAHv4n4dQMzKLoYaf");
   const { connection } = useConnection();
   const wallet = useAnchorWallet();
 
