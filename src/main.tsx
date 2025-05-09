@@ -6,18 +6,31 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Upload from "./pages/Upload.tsx";
 import Statistic from "./pages/Statistic.tsx";
 import History from "./pages/History.tsx";
-// import WalletContextProvider from "./contexts/WalletContext.tsx";
 import Profile from "./pages/Profile.tsx";
 
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+
+// Set up wallet adapters
+const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
+
+// Solana endpoint (devnet for development)
+const endpoint = clusterApiUrl("devnet");
+
+// React Router setup
 const routers = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      // {
-      //   index: true,
-      //   element: <Home />,
-      // },
       {
         index: true,
         element: <Upload />,
@@ -46,6 +59,12 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <RouterProvider router={routers} />
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <RouterProvider router={routers} />
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
   </StrictMode>
 );
