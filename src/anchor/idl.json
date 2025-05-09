@@ -9,16 +9,7 @@
   "instructions": [
     {
       "name": "add_product",
-      "discriminator": [
-        0,
-        219,
-        137,
-        36,
-        105,
-        180,
-        164,
-        93
-      ],
+      "discriminator": [0, 219, 137, 36, 105, 180, 164, 93],
       "accounts": [
         {
           "name": "signer",
@@ -31,15 +22,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  109,
-                  112,
-                  97,
-                  110,
-                  121
-                ]
+                "value": [99, 111, 109, 112, 97, 110, 121]
               },
               {
                 "kind": "arg",
@@ -51,23 +34,14 @@
       ],
       "args": [
         {
-          "name": "company_address",
+          "name": "_company_address",
           "type": "pubkey"
         }
       ]
     },
     {
       "name": "init_company",
-      "discriminator": [
-        4,
-        20,
-        200,
-        152,
-        94,
-        207,
-        211,
-        98
-      ],
+      "discriminator": [4, 20, 200, 152, 94, 207, 211, 98],
       "accounts": [
         {
           "name": "signer",
@@ -81,15 +55,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  109,
-                  112,
-                  97,
-                  110,
-                  121
-                ]
+                "value": [99, 111, 109, 112, 97, 110, 121]
               },
               {
                 "kind": "account",
@@ -112,16 +78,7 @@
     },
     {
       "name": "verify",
-      "discriminator": [
-        133,
-        161,
-        141,
-        48,
-        120,
-        198,
-        88,
-        150
-      ],
+      "discriminator": [133, 161, 141, 48, 120, 198, 88, 150],
       "accounts": [
         {
           "name": "signer",
@@ -135,40 +92,28 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  109,
-                  112,
-                  97,
-                  110,
-                  121
-                ]
+                "value": [99, 111, 109, 112, 97, 110, 121]
               },
               {
-                "kind": "account",
-                "path": "signer"
+                "kind": "arg",
+                "path": "company_address"
               }
             ]
           }
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "_company_address",
+          "type": "pubkey"
+        }
+      ]
     }
   ],
   "accounts": [
     {
       "name": "Company",
-      "discriminator": [
-        32,
-        212,
-        52,
-        137,
-        90,
-        7,
-        206,
-        183
-      ]
+      "discriminator": [32, 212, 52, 137, 90, 7, 206, 183]
     }
   ],
   "types": [

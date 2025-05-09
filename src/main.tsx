@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Upload from "./pages/Upload.tsx";
 import Statistic from "./pages/Statistic.tsx";
 import History from "./pages/History.tsx";
-import WalletContextProvider from "./contexts/WalletContext.tsx";
+// import WalletContextProvider from "./contexts/WalletContext.tsx";
 import Profile from "./pages/Profile.tsx";
 
 const routers = createBrowserRouter([
@@ -46,8 +46,6 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <WalletContextProvider>
-      <RouterProvider router={routers} />
-    </WalletContextProvider>
+    <RouterProvider router={routers} />
   </StrictMode>
 );

@@ -321,8 +321,9 @@ const Upload: React.FC = () => {
 
         // Step 6: Generate QR code with blockchain reference
         try {
+          console.log(result.product_id);
           const qrCodePayload = {
-            productId: product.info.id,
+            productId: result.product_id,
             blockchainRef: collectionResult.collectionAddress,
           };
 
@@ -336,15 +337,20 @@ const Upload: React.FC = () => {
               body: JSON.stringify(qrCodePayload),
             }
           );
-
           if (qrResponse.ok) {
             const qrResult = await qrResponse.json();
             console.log("QR code generated:", qrResult);
 
-            // Update the product with QR code
+            // Check if qr_code_data exists
             if (qrResult.qr_code_data) {
+              // Make a copy of the groupedProducts array and update the qrCodeImage for the specific product
               const updatedProducts = [...groupedProducts];
-              updatedProducts[index].qrCodeImage = qrResult.qr_code_data;
+              updatedProducts[index] = {
+                ...updatedProducts[index],
+                qrCodeImage: qrResult.qr_code_data, // Update qrCodeImage for the specific product
+              };
+
+              // Set the updated products state
               setGroupedProducts(updatedProducts);
             }
           }
@@ -365,7 +371,6 @@ const Upload: React.FC = () => {
     } finally {
       // Step 7: Update blockchain product count and clean up
       setLoadingIndex(null);
-      onDeleteProduct(index);
 
       try {
         if (publicKey) {
@@ -556,13 +561,13 @@ const Upload: React.FC = () => {
                       </div>
 
                       {/* QR Code Section - conditionally displayed */}
-                      {product.qrCodeImage && (
+                      {groupedProducts[index]?.qrCodeImage && (
                         <div className="mt-4 flex flex-col items-center p-3 bg-purple-50 rounded">
                           <h4 className="text-sm font-medium mb-2 text-purple-800">
                             Product QR Code
                           </h4>
                           <img
-                            src={product.qrCodeImage}
+                            src={groupedProducts[index].qrCodeImage} // Use the updated qrCodeImage for this product
                             alt="Product QR Code"
                             className="w-full max-w-[120px] h-auto"
                           />
