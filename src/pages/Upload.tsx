@@ -85,6 +85,8 @@ const Upload: React.FC = () => {
     ProductPreview | undefined
   >();
 
+  console.log(productPreview);
+
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);

@@ -1,4 +1,4 @@
-import * as anchor from "@coral-xyz/anchor";
+
 import {  PublicKey } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { useCompanyProgram } from "../anchor/setup";
@@ -7,11 +7,17 @@ export const useCompanyActions = () => {
     const { connection } = useConnection();
     const {publicKey, sendTransaction} = useWallet();
     const { program, companyRegistrationPDA } = useCompanyProgram();
-    const wallet = useWallet();
 
     //Fetch company data from given wallet address
     const fetchCompanyData = async (companyWalletAddr: string) => {
-        if (!program || !companyWalletAddr) return null;
+        const dataToReturnNull = {
+            companyName: '',
+            companyWalletAddr: '',
+            verificationStatus: '',
+            verificationTime: '',
+            productsAmount: 0,
+        }
+        if (!program || !companyWalletAddr) return dataToReturnNull;
 
         const walletAddr = new PublicKey(companyWalletAddr);
 
@@ -23,29 +29,29 @@ export const useCompanyActions = () => {
         try {
             const data = await program.account.company.fetch(pda);
             const unixTimestamp = data.verificationTime.toNumber(); // i64 -> number
-            let date = null;
-            if (unixTimestamp !== "0"){
-                date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds 
-                date = date.toLocaleDateString();
-            }else{
-                date = "Not verified yet";
-            }
-            const dataToReturn = {
-                companyName: data.companyName.toString(),
-                companyWalletAddr: data.companySigner.toBase58(),
-                verificationStatus: data.verificationStatus.toString(),
-                verificationTime: date,
-                productsAmount: data.productsAmount, 
+            if (data.verificationStatus.toString() == "Verified") {
+                let date = null;
+                if (unixTimestamp !== 0){
+                    date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds 
+                    date = date.toLocaleString();
+                } else{
+                    date = "Not verified yet";
+                }
+                const dataToReturn = {
+                    companyName: data.companyName.toString(),
+                    companyWalletAddr: data.companySigner.toBase58(),
+                    verificationStatus: data.verificationStatus,
+                    verificationTime: date,
+                    productsAmount: data.productsAmount, 
+                }
+                return dataToReturn;
             }
             console.log("Company wallet:", data.companySigner.toBase58())
-            console.log(dataToReturn);
-            return dataToReturn;
+            return null
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
-
-    console.log
 
     //Create company with a Name, wallet connection is required
     const createCompany = async (companyName: string) => {
@@ -57,7 +63,6 @@ export const useCompanyActions = () => {
             )
             .accounts({
                 signer: publicKey,
-                company: companyRegistrationPDA,
                 })
             .transaction();
 
@@ -73,24 +78,24 @@ export const useCompanyActions = () => {
     }
 
     //Change status from Unverified to Verified
-    const verify = async (companyWalletAddr: string) => {
+    const verify = async (companyWalletAddr:string) => {
         if (!program || !companyRegistrationPDA || !publicKey) return;  // Check if publicKey is valid
 
-        const walletAddr = new PublicKey(companyWalletAddr);
+        // const walletAddr = new PublicKey(companyWalletAddr);
 
-        const [pda] = PublicKey.findProgramAddressSync(
-            [Buffer.from("company"), walletAddr.toBuffer()],
-            program.programId
-        );
+        // const [pda] = PublicKey.findProgramAddressSync(
+        //     [Buffer.from("company"), walletAddr.toBuffer()],
+        //     program.programId
+        // );
         
         try {
             const tx = await program.methods
-            .verify()
+            .verify(
+                new PublicKey(companyWalletAddr)
+            )
             .accounts({
                 signer: publicKey,
-                company: pda,
-                systemProgram: anchor.web3.SystemProgram.programId,
-            })
+                })
             .transaction();
 
             const transactionSignature = await sendTransaction(tx, connection);
@@ -105,16 +110,16 @@ export const useCompanyActions = () => {
     }
 
     //Increase product number by 1
-    const addProduct = async (companyWalletAddress:string) => {
+    const addProduct = async (companyWalletAddr:string) => {
+        console.log("addProduct")
         if (!program || !companyRegistrationPDA || !publicKey) return;  // Check if publicKey is valid
         try {
             const tx = await program.methods
             .addProduct(
-                new PublicKey(companyWalletAddress),
+                new PublicKey(companyWalletAddr),
             )
             .accounts({
                 signer: publicKey,
-                company: companyRegistrationPDA,
                 })
             .transaction();
 
@@ -136,4 +141,3 @@ export const useCompanyActions = () => {
         addProduct,
     }
 }
-
