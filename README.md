@@ -104,12 +104,5 @@ export default tseslint.config({
     ...reactDom.configs.recommended.rules,
   },
 });
+``;
 ```
-
-## 📄 License
-
-[Specify your license here]
-
-## 👥 Contributors
-
-[List of contributors]
