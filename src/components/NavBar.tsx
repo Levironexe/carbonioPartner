@@ -3,10 +3,7 @@ import { useState, useEffect } from "react";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { useWallet } from "@lazorkit/wallet";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import {
-  useConnection,
-  useWallet as useSolanaWallet,
-} from "@solana/wallet-adapter-react";
+import { useWallet as useSolanaWallet } from "@solana/wallet-adapter-react";
 
 const NavBar = () => {
   // Lazorkit authentication
@@ -26,19 +23,16 @@ const NavBar = () => {
     publicKey: walletPublicKey,
     connected: isWalletConnected,
     disconnect: disconnectWallet,
-    wallet,
   } = useSolanaWallet();
 
   const { setVisible } = useWalletModal();
-  const { connection } = useConnection();
-
   const [walletStatus, setWalletStatus] = useState({
     connecting: false,
     error: null,
   });
 
   // Format wallet address to be more user-friendly
-  const formatPublicKey = (key) => {
+  const formatPublicKey = (key: any) => {
     if (!key) return "";
     const keyString = typeof key === "object" ? key.toString() : key;
     return `${keyString.slice(0, 4)}...${keyString.slice(-4)}`;
@@ -59,7 +53,7 @@ const NavBar = () => {
 
       // After successful authentication, proceed to wallet connection
       handleConnectWallet();
-    } catch (err) {
+    } catch (err: any) {
       setWalletStatus({
         connecting: false,
         error: err.message || "Authentication failed",
@@ -77,7 +71,7 @@ const NavBar = () => {
         connecting: true,
         error: null,
       });
-    } catch (err) {
+    } catch (err: any) {
       setWalletStatus({
         connecting: false,
         error: err.message || "Wallet connection failed",
@@ -231,11 +225,6 @@ const NavBar = () => {
 
           {/* Wallet Connection UI */}
           {renderWalletSection()}
-
-          {/* Error display */}
-          {walletStatus.error && (
-            <div className="text-red-300 text-sm">{walletStatus.error}</div>
-          )}
         </div>
       </div>
     </div>
