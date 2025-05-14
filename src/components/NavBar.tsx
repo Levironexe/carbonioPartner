@@ -4,8 +4,11 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import { useWallet } from "@lazorkit/wallet";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useWallet as useSolanaWallet } from "@solana/wallet-adapter-react";
-
+import { ChevronDown } from "lucide-react";
 const NavBar = () => {
+    const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+const web1 = import.meta.env.VITE_WEB1;
+const web2 = import.meta.env.VITE_WEB2;
   // Lazorkit authentication
   const {
     isConnected: isAuthenticated,
@@ -197,13 +200,53 @@ const NavBar = () => {
       </div>
     );
   };
-
+    interface DropdownItem {
+    title: string;
+    href: string;
+    target?: string;
+  }
+  
+  interface NavItem {
+    title: string;
+    href: string;
+    icon?: React.ReactNode;
+    dropdown?: DropdownItem[];
+  }
+const navItems: NavItem[] = [
+    {
+      title: "Features",
+      href: `${web1}/features`,
+      icon:<ChevronDown className='h-4 w-4'/>,
+      dropdown: [
+        {title: "Company dashboard",  href: `${web1}/company-dashboard`,},
+        {title: "Upload data", href: `${web2}/`, target: "_blank"},
+        {title: "Profile", href: `${web2}/profile`, target: "_blank"},
+      ]
+    },
+    {
+      title: "Our globe",
+      href: `${web1}/our-globe`,
+    },
+    {
+      title: "About us",
+      icon:<ChevronDown className='h-4 w-4'/>,
+      href: `${web1}/about-us`,
+      dropdown: [
+        { title: "What we do", href: `${web1}/about-us#what-we-do`},
+        { title: "Our team", href: `${web1}/about-us#our-team` },
+      ]
+    },
+    {
+      title: "Collaboration",
+      href: `${web1}/collaboration`,
+    }
+  ];
   return (
     <div className="w-full p-2 sm:p-4 md:sticky md:z-40 top-0 transition-all duration-200">
       <div className="mx-auto bg-white border-black border-2 max-w-6xl flex flex-col sm:flex-row justify-between items-center gap-2 rounded">
         <div>
           <Link
-            to="/"
+            to={`${web1}/`}
             className="text-purple-700 w-auto text-xl sm:text-xl font-bold pl-2 sm:pl-3"
           >
             carbonio
@@ -213,16 +256,45 @@ const NavBar = () => {
           </Link>
         </div>
         <div className="w-full sm:w-fit text-white text-base sm:text-lg md:text-lg flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center sm:justify-end bg-purple-700 px-2 sm:px-3 py-1">
-          <Link to="/" className="hover:text-black transition-all duration-200">
-            Upload
-          </Link>
-          <Link
-            className="hover:text-black transition-all duration-200"
-            to="/profile"
-          >
-            Profile
-          </Link>
-
+           {navItems.map((item, index) => (
+            <div 
+              key={index} 
+              className="relative group"
+              onMouseEnter={() => setActiveDropdown(index)}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <Link 
+                className='hover:text-white transition-all duration-200 flex items-center gap-1' 
+                to={item.href}
+              >
+                {item.title}
+                {item.icon}
+              </Link>
+              
+              {/* Dropdown menu */}
+              {item.dropdown && (
+                <div 
+                  className={`absolute left-0 mt-2 w-48 bg-carbon border-2 border-carbon rounded shadow-lg z-50 transition-all duration-150 ${
+                    activeDropdown === index ? 'opacity-100 visible' : 'opacity-0 invisible'
+                  }`}
+                >
+                  <ul className="pb-2">
+                    {item.dropdown.map((dropdownItem, index) => (
+                      <li key={index}>
+                        <Link 
+                          to={dropdownItem.href}
+                          target={dropdownItem.target}
+                          className="block px-4 py-2 rounded text-white text-sm text-center mt-2 mx-2 hover:bg-black"
+                        >
+                          {dropdownItem.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
           {/* Wallet Connection UI */}
           {renderWalletSection()}
         </div>
